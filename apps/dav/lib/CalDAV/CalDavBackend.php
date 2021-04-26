@@ -93,7 +93,6 @@ use function array_values;
 use function explode;
 use function is_array;
 use function pathinfo;
-use function preg_match;
 use function sprintf;
 use function str_replace;
 use function strtolower;
@@ -337,7 +336,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 				'uri' => $row['uri'],
 				'principaluri' => $this->convertPrincipal($row['principaluri'], !$this->legacyEndpoint),
 				'{' . Plugin::NS_CALENDARSERVER . '}getctag' => 'http://sabre.io/ns/sync/' . ($row['synctoken']?$row['synctoken']:'0'),
-				'{http://sabredav.org/ns}sync-token' => $row['synctoken']?$row['synctoken'] : '0',
+				'{http://sabredav.org/ns}sync-token' => $row['synctoken']?$row['synctoken']:'0',
 				'{' . Plugin::NS_CALDAV . '}supported-calendar-component-set' => new SupportedCalendarComponentSet($components),
 				'{' . Plugin::NS_CALDAV . '}schedule-calendar-transp' => new ScheduleCalendarTransp($row['transparent']?'transparent':'opaque'),
 				'{' . \OCA\DAV\DAV\Sharing\Plugin::NS_OWNCLOUD . '}owner-principal' => $this->convertPrincipal($principalUri, !$this->legacyEndpoint),
@@ -2058,7 +2057,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 		return null;
 	}
 
-	public function getCalendarObjectById(string $principalUri, int $id) {
+	public function getCalendarObjectById(string $principalUri, int $id): ?array {
 		$query = $this->db->getQueryBuilder();
 		$query->select(['co.id', 'co.uri', 'co.lastmodified', 'co.etag', 'co.calendarid', 'co.size', 'co.calendardata', 'co.componenttype', 'co.classification', 'co.deleted_at'])
 			->from('calendarobjects', 'co')

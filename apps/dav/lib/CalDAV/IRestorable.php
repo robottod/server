@@ -38,5 +38,4 @@ interface IRestorable {
 	 * @throws Exception
 	 */
 	public function restore(): void;
-
 }
