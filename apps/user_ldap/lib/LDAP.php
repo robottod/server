@@ -47,11 +47,7 @@ class LDAP implements ILDAPWrapper {
 	protected $pagedResultsAdapter;
 
 	public function __construct() {
-		if (version_compare(PHP_VERSION, '7.3', '<') === true) {
-			$this->pagedResultsAdapter = new Php54();
-		} else {
-			$this->pagedResultsAdapter = new Php73();
-		}
+		$this->pagedResultsAdapter = new Php73();
 	}
 
 	/**
