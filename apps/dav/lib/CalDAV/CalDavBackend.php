@@ -1032,7 +1032,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			->join('co', 'calendars', 'c', $query->expr()->eq('c.id', 'co.calendarid', IQueryBuilder::PARAM_INT))
 			->where($query->expr()->eq('principaluri', $query->createNamedParameter($principalUri)))
 			->andWhere($query->expr()->isNotNull('co.deleted_at'));
-		$stmt = $query->execute();
+		$stmt = $query->executeQuery();
 
 		$result = [];
 		foreach ($stmt->fetchAll() as $row) {
@@ -1195,7 +1195,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			->andWhere($qbDel->expr()->eq('uid', $qbDel->createNamedParameter($extraData['uid'])))
 			->andWhere($qbDel->expr()->eq('calendartype', $qbDel->createNamedParameter($calendarType)))
 			->andWhere($qbDel->expr()->isNotNull('deleted_at'));
-		$result = $qbDel->execute();
+		$result = $qbDel->executeQuery();
 		$count = (int) $result->fetchOne();
 		$result->closeCursor();
 		if ($count !== 0) {
@@ -2065,7 +2065,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			->join('co', 'calendars', 'c', $query->expr()->eq('c.id', 'co.calendarid', IQueryBuilder::PARAM_INT))
 			->where($query->expr()->eq('c.principaluri', $query->createNamedParameter($principalUri)))
 			->andWhere($query->expr()->eq('co.id', $query->createNamedParameter($id, IQueryBuilder::PARAM_INT), IQueryBuilder::PARAM_INT));
-		$stmt = $query->execute();
+		$stmt = $query->executeQuery();
 		$row = $stmt->fetch();
 		$stmt->closeCursor();
 
